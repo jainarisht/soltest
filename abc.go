@@ -41,22 +41,24 @@ func (t *SimpleAsset) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
 func (t *SimpleAsset) incrementCounter(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 	value, err := stub.GetState("counter")
 	counter, _ := strconv.Atoi(string(value))
-	err = stub.PutState("counter", []byte(string(counter+1)))
+	counter = counter + 1
+	err = stub.PutState("counter", []byte(strconv.Itoa(counter)))
 	if err != nil {
 		return shim.Error("Failed to set counter")
 	}
-	return shim.Success([]byte("Updated counter value: " + string(counter+1)))
+	return shim.Success([]byte("Updated counter value: " + string(counter)))
 }
 
 // decrementCounter reduces the counter value by 1
 func (t *SimpleAsset) decrementCounter(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 	value, err := stub.GetState("counter")
 	counter, _ := strconv.Atoi(string(value))
-	err = stub.PutState("counter", []byte(string(counter-1)))
+	counter = counter - 1
+	err = stub.PutState("counter", []byte(string(counter)))
 	if err != nil {
 		return shim.Error("Failed to set counter")
 	}
-	return shim.Success([]byte("Updated counter value: " + string(counter-1)))
+	return shim.Success([]byte("Updated counter value: " + string(counter)))
 }
 
 // getCounter returns the value of the counter

@@ -46,7 +46,7 @@ func (t *SimpleAsset) incrementCounter(stub shim.ChaincodeStubInterface, args []
 	if err != nil {
 		return shim.Error("Failed to set counter")
 	}
-	return shim.Success([]byte("Updated counter value: " + string(counter)))
+	return shim.Success([]byte("Updated counter value: " + strconv.Itoa(counter)))
 }
 
 // decrementCounter reduces the counter value by 1
@@ -54,11 +54,11 @@ func (t *SimpleAsset) decrementCounter(stub shim.ChaincodeStubInterface, args []
 	value, err := stub.GetState("counter")
 	counter, _ := strconv.Atoi(string(value))
 	counter = counter - 1
-	err = stub.PutState("counter", []byte(string(counter)))
+	err = stub.PutState("counter", []byte(strconv.Itoa(counter)))
 	if err != nil {
 		return shim.Error("Failed to set counter")
 	}
-	return shim.Success([]byte("Updated counter value: " + string(counter)))
+	return shim.Success([]byte("Updated counter value: " + strconv.Itoa(counter)))
 }
 
 // getCounter returns the value of the counter

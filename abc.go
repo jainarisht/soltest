@@ -13,6 +13,10 @@ type SimpleAsset struct {
 
 // Init is called during chaincode instantiation to initialize any data.
 func (t *SimpleAsset) Init(stub shim.ChaincodeStubInterface) peer.Response {
+	err := stub.PutState("counter", []byte(string(0)))
+	if err != nil {
+		return shim.Error("Failed to set counter")
+	}
 	return shim.Success(nil)
 }
 

@@ -12,7 +12,13 @@ type SimpleAsset struct {
 }
 
 // Init is called during chaincode instantiation to initialize any data.
-func (t *SimpleAsset) Init(stub shim.ChaincodeStubInterface) peer.Response {
+func (t *SimpleAsset) Init(stub shim.ChaincodeStubInterface, args []string) peer.Response {
+	if len(args) != 2 {
+		logger.Error("Incorrect number of arguments passed in init.")
+		resp := shim.Error("Incorrect number of arguments. Expecting 2 arguments: " + strconv.Itoa(len(args)) + " given.")
+		resp.Status = 400
+		return resp
+	}
 	err := stub.PutState("counter", []byte("0"))
 	if err != nil {
 		return shim.Error("Failed to set counter")
